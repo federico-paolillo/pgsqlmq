@@ -10,6 +10,7 @@
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.1.4" />
       <PackageReference Include="Npgsql" Version="7.0.6" />
+      <PackageReference Include="UuidExtensions" Version="1.2.0" />
     </ItemGroup>
 
 </Project>
