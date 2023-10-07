@@ -39,6 +39,8 @@ public sealed class Listener
 
     public async Task Start(CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
         await Task.Run(
             () => Listen(cancellationToken),
             cancellationToken
@@ -48,6 +50,8 @@ public sealed class Listener
     public async Task<Notification> WaitForNotification(
         CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        
         return await _channel.Reader.ReadAsync(cancellationToken);
     }
 

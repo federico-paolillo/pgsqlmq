@@ -39,7 +39,7 @@ public sealed class Fetcher
                 @"DELETE FROM messages WHERE id = {Id}",
                 new
                 {
-                    Id = maybeMessage.Id
+                    maybeMessage.Id
                 },
                 transaction: tx
             );
