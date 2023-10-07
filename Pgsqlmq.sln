@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pgsqlmq.Producer", "Pgsqlmq.Producer\Pgsqlmq.Producer.csproj", "{356B28B1-7347-4E89-A3DB-182D0DC9C3B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pgsqlmq.Consumer", "Pgsqlmq.Consumer\Pgsqlmq.Consumer.csproj", "{36B885D2-7A92-43BE-AF1C-C21218FAC0D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pgsqlmq.Messages", "Pgsqlmq.Messages\Pgsqlmq.Messages.csproj", "{FDE4983D-9FC3-4196-92ED-257D04C38483}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{356B28B1-7347-4E89-A3DB-182D0DC9C3B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{356B28B1-7347-4E89-A3DB-182D0DC9C3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{356B28B1-7347-4E89-A3DB-182D0DC9C3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{356B28B1-7347-4E89-A3DB-182D0DC9C3B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36B885D2-7A92-43BE-AF1C-C21218FAC0D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36B885D2-7A92-43BE-AF1C-C21218FAC0D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36B885D2-7A92-43BE-AF1C-C21218FAC0D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36B885D2-7A92-43BE-AF1C-C21218FAC0D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDE4983D-9FC3-4196-92ED-257D04C38483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDE4983D-9FC3-4196-92ED-257D04C38483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDE4983D-9FC3-4196-92ED-257D04C38483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDE4983D-9FC3-4196-92ED-257D04C38483}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
