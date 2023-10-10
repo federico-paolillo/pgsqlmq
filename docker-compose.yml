@@ -1,0 +1,23 @@
+version: "31"
+services:
+  db:
+    image: bitnami/postgresql:16.0.0
+    environment:
+      - POSTGRESQL_PASSWORD=adminADMIN1234!
+      - POSTGRESQL_DATABASE=pgsqlmq
+      - POSTGRESQL_PORT_NUMBER=65432
+    expose:
+      - 65432
+    ports:
+      - 65432:65432
+    volumes:
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/001_create_tables.sql:ro
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=adminADMIN1234!
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.admin
+    ports:
+      - 80:65080
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json:rw

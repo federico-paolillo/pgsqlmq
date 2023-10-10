@@ -1,0 +1,11 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "PgSQLMq",
+            "Port": 65432,
+            "Username": "postgres",
+            "Host": "localhost",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}

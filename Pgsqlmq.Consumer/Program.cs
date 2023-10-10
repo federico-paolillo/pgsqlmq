@@ -14,7 +14,7 @@ void OnCtrlC(object _,
 Console.CancelKeyPress += OnCtrlC;
 
 await using var database = NpgsqlDataSource.Create(
-    "Host=localhost;Port=65535;Database=pgsqlmq;Username=postgres;Password=adminADMIN1234!"
+    "Host=localhost;Port=65432;Database=pgsqlmq;Username=postgres;Password=adminADMIN1234!"
 );
 
 var listener = new Listener(

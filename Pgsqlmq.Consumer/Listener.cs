@@ -40,9 +40,9 @@ public sealed class Listener
     public async Task Start(CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
+
         await Task.Run(
-            () => Listen(cancellationToken),
+            () => ListenSafely(cancellationToken),
             cancellationToken
         );
     }
@@ -51,8 +51,22 @@ public sealed class Listener
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        
+
         return await _channel.Reader.ReadAsync(cancellationToken);
+    }
+
+    private async Task ListenSafely(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Listen(cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            _channel.Writer.Complete(ex);
+
+            throw;
+        }
     }
 
     private async Task Listen(
@@ -62,12 +76,14 @@ public sealed class Listener
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            var silenceTime = 0L;
+            var gotNotification = false;
 
             async void OnNotification(object _,
                 NpgsqlNotificationEventArgs args)
             {
-                silenceTime = 0L;
+                Console.WriteLine("Got a notification!");
+
+                gotNotification = true;
 
                 await _channel.Writer.WriteAsync(
                     new Notification(),
@@ -80,38 +96,45 @@ public sealed class Listener
 
             connection.Notification += OnNotification;
 
+            using var silenceTimer = new PeriodicTimer(_opts.MaxSilenceTime);
+
             await connection.ExecuteAsync(
-                @"LISTEN {NotificationChannel}",
-                new
-                {
-                    _opts.NotificationChannel
-                }
+                @$"LISTEN {_opts.NotificationChannel};"
             );
 
-            var before = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Console.WriteLine("Listening for notifications");
 
-            while (!cancellationToken.IsCancellationRequested &&
-                   silenceTime < _opts.MaxSilenceTime.TotalMilliseconds)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                // Count for how long we loop
-                // If something arrives the callback will reset silenceTime
+                await silenceTimer.WaitForNextTickAsync(cancellationToken);
 
-                var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                if (gotNotification)
+                {
+                    Console.WriteLine("Notifications keep on coming in");
 
-                var delta = now - before;
+                    gotNotification = false;
+                }
+                else
+                {
+                    Console.WriteLine(
+                        "There were no notification for too long."
+                    );
 
-                silenceTime = silenceTime + delta;
-                before = now;
-
-                // We are just waiting for something to come
-                // We can surrender the execution to another thread
-
-                await Task.Yield();
+                    break;
+                }
             }
 
             connection.Notification -= OnNotification;
 
+            // Release connection
+
+            await connection.CloseAsync();
+
             // Wait a bit before trying again
+
+            Console.WriteLine(
+                "Returned connection. Going to sleep, will try to listen again later"
+            );
 
             await Task.Delay(_opts.PollingInterval, cancellationToken);
         }
