@@ -4,8 +4,9 @@
             "Name": "PgSQLMq",
             "Port": 65432,
             "Username": "postgres",
-            "Host": "localhost",
-            "MaintenanceDB": "postgres"
+            "Host": "db",
+            "MaintenanceDB": "postgres",
+            "Group": "Servers"
         }
     }
 }

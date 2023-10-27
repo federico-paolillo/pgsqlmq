@@ -13,4 +13,8 @@
       <PackageReference Include="UuidExtensions" Version="1.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Pgsqlmq.Consumer\Pgsqlmq.Consumer.csproj" />
+    </ItemGroup>
+
 </Project>

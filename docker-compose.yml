@@ -18,6 +18,6 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=adminADMIN1234!
       - PGADMIN_DEFAULT_EMAIL=admin@admin.admin
     ports:
-      - 80:65080
+      - 65080:80
     volumes:
       - ./servers.json:/pgadmin4/servers.json:rw

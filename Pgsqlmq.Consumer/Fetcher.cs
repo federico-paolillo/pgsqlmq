@@ -29,14 +29,14 @@ public sealed class Fetcher
             await connection.BeginTransactionAsync(cancellationToken);
 
         var maybeMessage = await connection.QueryFirstOrDefaultAsync<Message>(
-            @"SELECT * FROM messages FOR UPDATE SKIP LOCKED LIMIT 1",
+            @"SELECT * FROM public.messages FOR UPDATE SKIP LOCKED LIMIT 1",
             transaction: tx
         );
 
         if (maybeMessage is not null)
         {
             await connection.ExecuteAsync(
-                @"DELETE FROM messages WHERE id = {Id}",
+                @"DELETE FROM public.messages WHERE id = @Id",
                 new
                 {
                     maybeMessage.Id

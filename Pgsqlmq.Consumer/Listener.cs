@@ -96,29 +96,23 @@ public sealed class Listener
 
             connection.Notification += OnNotification;
 
-            using var silenceTimer = new PeriodicTimer(_opts.MaxSilenceTime);
-
             await connection.ExecuteAsync(
                 @$"LISTEN {_opts.NotificationChannel};"
             );
 
             Console.WriteLine("Listening for notifications");
 
+
             while (!cancellationToken.IsCancellationRequested)
             {
-                await silenceTimer.WaitForNextTickAsync(cancellationToken);
+                var gotSomething = await connection.WaitAsync(
+                    _opts.MaxSilenceTime,
+                    cancellationToken
+                );
 
-                if (gotNotification)
+                if (gotSomething is false)
                 {
-                    Console.WriteLine("Notifications keep on coming in");
-
-                    gotNotification = false;
-                }
-                else
-                {
-                    Console.WriteLine(
-                        "There were no notification for too long."
-                    );
+                    Console.WriteLine("There was silence for too long");
 
                     break;
                 }
@@ -126,11 +120,7 @@ public sealed class Listener
 
             connection.Notification -= OnNotification;
 
-            // Release connection
-
             await connection.CloseAsync();
-
-            // Wait a bit before trying again
 
             Console.WriteLine(
                 "Returned connection. Going to sleep, will try to listen again later"
