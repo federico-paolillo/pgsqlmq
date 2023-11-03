@@ -25,11 +25,7 @@ public sealed class Processor
 
             if (message is not null)
             {
-                Console.WriteLine(
-                    "Consumed message {0:N} with payload {1}",
-                    message.Id,
-                    message.Payload
-                );
+                Console.WriteLine($"Consumed message {message.Id:N}");
             }
         }
     }

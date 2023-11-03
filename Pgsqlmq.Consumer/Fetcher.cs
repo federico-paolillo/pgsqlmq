@@ -29,7 +29,11 @@ public sealed class Fetcher
             await connection.BeginTransactionAsync(cancellationToken);
 
         var maybeMessage = await connection.QueryFirstOrDefaultAsync<Message>(
-            @"SELECT * FROM public.messages FOR UPDATE SKIP LOCKED LIMIT 1",
+            @"SELECT id, payload 
+              FROM public.messages 
+              ORDER BY id ASC
+              FOR UPDATE SKIP LOCKED 
+              LIMIT 1;",
             transaction: tx
         );
 

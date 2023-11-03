@@ -31,8 +31,6 @@ public sealed class Persistor
         await using var tx =
             await connection.BeginTransactionAsync(cancellationToken);
         
-        Console.WriteLine("Adding a message");
-
         await connection.ExecuteAsync(
             @"INSERT INTO public.messages(Id, Payload) VALUES (@Id, @Payload);",
             new
@@ -42,13 +40,13 @@ public sealed class Persistor
             },
             transaction: tx
         );
-
-        Console.WriteLine("Sending a notification");
         
         await connection.ExecuteAsync(
             $@"NOTIFY {_opts.NotificationChannel};",
             transaction: tx
         );
+        
+        Console.WriteLine($"Sent message {message.Id:D}");
 
         await tx.CommitAsync(cancellationToken);
     }
